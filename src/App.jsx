@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="flex min-h-screen flex-col bg-emerald-50/40">
       <Navbar />
-      <main className="flex flex-1">
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tentang-kami" element={<About />} />
