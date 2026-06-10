@@ -1,3 +1,4 @@
+import logoBankSampah from "../assets/images/logo-banksampah.png";
 import { NavLink, Link } from "react-router-dom";
 import { authNavigation, mainNavigation } from "../data/navigation";
 
@@ -14,17 +15,11 @@ function Navbar() {
     <header className="sticky top-0 z-20 border-b border-emerald-100 bg-white/95 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-700 text-lg font-bold text-white">
-            BS
-          </span>
-          <div>
-            <p className="text-lg font-bold leading-none text-emerald-950">
-              BankSampah.id
-            </p>
-            <p className="text-xs font-medium text-emerald-700">
-              Tabung sampah, jaga bumi
-            </p>
-          </div>
+          <img
+            src={logoBankSampah}
+            alt="BankSampah.id Logo"
+            className="h-12 w-auto object-contain"
+          />
         </Link>
 
         <div className="flex flex-wrap items-center gap-2">

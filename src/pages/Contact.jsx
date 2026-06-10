@@ -11,15 +11,39 @@ function Contact() {
     {
       label: "Alamat Kantor",
       values: [
-        "Gedung EcoCenter Lt. 4, Jl. Sudirman No. 123, Senayan, Jakarta Selatan, 12190",
+        "Bank Sampah Induk Surabaya",
+        "Jl. Raya Keputih No. 51, Keputih, Sukolilo, Kota Surabaya, Jawa Timur 60111",
       ],
     },
   ];
 
+  const contactHighlights = [
+    {
+      label: "Jam Operasional",
+      value: "Senin - Jumat, 08.00 - 17.00 WIB",
+    },
+    {
+      label: "Response Time",
+      value: "Respon awal dalam 1x24 jam kerja",
+    },
+  ];
+
   const faqs = [
-    "Bagaimana cara mendaftar sebagai nasabah Bank Sampah?",
-    "Berapa minimum deposit sampah yang bisa disetorkan?",
-    "Bagaimana proses penarikan dana hasil tabungan sampah?",
+    {
+      question: "Bagaimana cara mendaftar sebagai nasabah Bank Sampah?",
+      answer:
+        "Anda dapat mendaftar melalui halaman registrasi, lalu menyiapkan data diri dasar untuk verifikasi akun dan aktivasi layanan.",
+    },
+    {
+      question: "Berapa minimum deposit sampah yang bisa disetorkan?",
+      answer:
+        "Setoran dapat dimulai dari jumlah kecil selama sesuai kategori yang diterima oleh bank sampah mitra. Sistem akan menyesuaikan pencatatan sesuai jenis dan berat sampah.",
+    },
+    {
+      question: "Bagaimana proses penarikan dana hasil tabungan sampah?",
+      answer:
+        "Saldo hasil tabungan dapat diajukan untuk penarikan sesuai jadwal layanan dan verifikasi transaksi yang berlaku di masing-masing cabang.",
+    },
   ];
 
   return (
@@ -50,10 +74,25 @@ function Contact() {
           <div className="grid gap-8 lg:grid-cols-5">
             <div className="space-y-6 lg:col-span-2">
               <div className="rounded-[2rem] border border-emerald-100 bg-white p-8 shadow-[0_20px_60px_rgba(16,185,129,0.12)]">
-                <h2 className="text-2xl font-bold text-emerald-950">
-                  Informasi Kontak
-                </h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                      Informasi Kontak
+                    </p>
+                    <h2 className="mt-2 text-2xl font-bold text-emerald-950">
+                      Hubungi Tim Kami
+                    </h2>
+                  </div>
+                  <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-right">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                      Lokasi
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-emerald-950">
+                      Surabaya
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
                   Pilih kanal yang paling nyaman untuk menghubungi tim kami.
                 </p>
 
@@ -61,18 +100,34 @@ function Contact() {
                   {contactItems.map((item) => (
                     <div
                       key={item.label}
-                      className="rounded-2xl bg-emerald-50/70 p-5 ring-1 ring-emerald-100"
+                      className="rounded-[1.5rem] border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-[0_14px_35px_rgba(16,185,129,0.06)]"
                     >
                       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700">
                         {item.label}
                       </p>
                       <div className="mt-3 space-y-2 text-slate-700">
                         {item.values.map((value) => (
-                          <p key={value} className="leading-7">
+                          <p key={value} className="leading-7 text-slate-700">
                             {value}
                           </p>
                         ))}
                       </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {contactHighlights.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                        {item.label}
+                      </p>
+                      <p className="mt-2 text-sm font-medium leading-6 text-slate-700">
+                        {item.value}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -147,6 +202,11 @@ function Contact() {
                     />
                   </label>
 
+                  <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 px-4 py-4 text-sm leading-7 text-slate-600">
+                    Tim kami menjaga setiap pesan tetap tertata dan merespons
+                    sesuai prioritas layanan.
+                  </div>
+
                   <button
                     type="submit"
                     className="mt-2 inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-emerald-800 to-emerald-600 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-900/15 transition hover:-translate-y-0.5 hover:from-emerald-700 hover:to-emerald-500"
@@ -173,17 +233,14 @@ function Contact() {
             <div className="mt-8 grid gap-4">
               {faqs.map((faq) => (
                 <details
-                  key={faq}
+                  key={faq.question}
                   className="group rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm transition open:shadow-md"
                 >
                   <summary className="cursor-pointer list-none text-base font-semibold text-slate-800 transition group-open:text-emerald-800 md:text-lg">
-                    {faq}
+                    {faq.question}
                   </summary>
                   <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600 md:text-base">
-                    Tim kami akan membantu Anda melalui proses pendaftaran,
-                    setoran, dan penarikan sesuai panduan layanan BankSampah.id.
-                    Silakan kirim pesan bila membutuhkan penjelasan yang lebih
-                    spesifik.
+                    {faq.answer}
                   </p>
                 </details>
               ))}
@@ -191,47 +248,52 @@ function Contact() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 lg:px-12">
-          <div className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700 shadow-[0_20px_60px_rgba(16,185,129,0.2)]">
-            <div className="grid min-h-[320px] gap-0 lg:grid-cols-5">
-              <div className="flex flex-col justify-between p-8 text-white lg:col-span-2 lg:p-10">
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-100/80">
-                    Map Placeholder
-                  </p>
-                  <h3 className="mt-3 text-2xl font-bold md:text-3xl">
-                    Lokasi Kantor & Area Layanan
-                  </h3>
-                  <p className="mt-4 max-w-md text-sm leading-7 text-emerald-50/85 md:text-base">
-                    Bagian ini dapat digunakan untuk menampilkan peta atau
-                    ilustrasi lokasi kantor BankSampah.id sesuai desain Figma.
-                  </p>
-                </div>
-
-                <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold text-emerald-950">
-                  <span className="rounded-full bg-white px-4 py-2 shadow-sm">
-                    Jakarta Selatan
-                  </span>
-                  <span className="rounded-full bg-lime-200 px-4 py-2 shadow-sm">
-                    EcoCenter
-                  </span>
-                </div>
-              </div>
-
-              <div className="relative min-h-[260px] lg:col-span-3">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.2),transparent_30%),radial-gradient(circle_at_80%_30%,rgba(190,242,100,0.2),transparent_25%),radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.12),transparent_30%)]" />
-                <div className="absolute inset-0 flex items-center justify-center p-8">
-                  <div className="w-full max-w-xl rounded-[2rem] border border-white/20 bg-white/10 p-8 text-center backdrop-blur-md md:p-10">
-                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/15 text-4xl text-white shadow-lg">
-                      🗺️
-                    </div>
-                    <h4 className="mt-5 text-xl font-bold text-white md:text-2xl">
-                      Peta Cabang BankSampah.id
-                    </h4>
-                    <p className="mt-3 text-sm leading-7 text-emerald-50/85 md:text-base">
-                      Ganti area ini dengan peta interaktif, gambar lokasi, atau
-                      ilustrasi map sesuai kebutuhan tampilan akhir.
+        <section className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-800 px-6 py-16 md:px-10 lg:px-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-[0_24px_70px_rgba(6,78,59,0.35)] backdrop-blur-sm">
+              <div className="grid gap-0 lg:grid-cols-5">
+                <div className="flex flex-col justify-between p-8 text-white lg:col-span-2 lg:p-10">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-100/80">
+                      Lokasi Kami
                     </p>
+                    <h3 className="mt-3 text-2xl font-bold md:text-3xl">
+                      Lokasi Kantor & Area Layanan
+                    </h3>
+                    <p className="mt-4 max-w-md text-sm leading-7 text-emerald-50/85 md:text-base">
+                      Bank Sampah Induk Surabaya, Jl. Raya Keputih No. 51,
+                      Keputih, Sukolilo, Kota Surabaya, Jawa Timur 60111.
+                    </p>
+                  </div>
+
+                  <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold text-emerald-950">
+                    <span className="rounded-full bg-white px-4 py-2 shadow-sm">
+                      Surabaya
+                    </span>
+                    <span className="rounded-full bg-lime-200 px-4 py-2 shadow-sm">
+                      Area Layanan
+                    </span>
+                  </div>
+
+                  <a
+                    href="https://maps.app.goo.gl/7g5U1239J8J7Z6AF7"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-8 inline-flex w-fit items-center justify-center rounded-2xl bg-lime-300 px-5 py-3 text-sm font-bold text-emerald-950 transition hover:-translate-y-0.5 hover:bg-lime-200"
+                  >
+                    Buka di Google Maps
+                  </a>
+                </div>
+
+                <div className="p-4 pb-8 lg:col-span-3 lg:p-6 lg:pl-0">
+                  <div className="rounded-[1.75rem] bg-emerald-950/30 p-3 shadow-inner shadow-black/10">
+                    <iframe
+                      title="Google Maps Bank Sampah Induk Surabaya"
+                      src="https://www.google.com/maps?q=Bank%20Sampah%20Induk%20Surabaya&output=embed"
+                      className="h-[360px] w-full rounded-2xl border-0 md:h-[520px]"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
                   </div>
                 </div>
               </div>
