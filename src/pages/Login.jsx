@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
@@ -9,50 +8,15 @@ function Login() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError("");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (!formData.email || !formData.password) {
-      setError("Email dan password wajib diisi!");
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError("Format email tidak valid!");
-      return;
-    }
-
-    setIsLoading(true);
-    
-    try {
-      const response = await axios.post("/api/auth/login", formData);
-      
-      if (response.data.success) {
-        // Simpan token dan user data
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        
-        // Redirect berdasarkan role
-        if (response.data.user.role === "admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/dashboard");
-        }
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Email atau password salah!");
-    } finally {
-      setIsLoading(false);
-    }
+    navigate("/dashboard");
   };
 
   return (
@@ -76,12 +40,6 @@ function Login() {
         <div className="rounded-[2rem] border border-white/10 bg-white/10 backdrop-blur-md p-8 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Error Message */}
-            {error && (
-              <div className="rounded-xl bg-red-500/20 border border-red-500/30 px-4 py-3 text-sm text-red-200">
-                {error}
-              </div>
-            )}
-
             {/* Email Field */}
             <div className="space-y-2">
               <label className="text-sm font-semibold text-emerald-50/90">
@@ -151,7 +109,7 @@ function Login() {
                 />
                 <span className="text-emerald-50/80">Ingat saya</span>
               </label>
-              <Link to="/forgot-password" className="text-emerald-300 hover:text-emerald-200 transition">
+              <Link to="/lupa-sandi" className="text-emerald-300 hover:text-emerald-200 transition">
                 Lupa password?
               </Link>
             </div>
@@ -159,25 +117,12 @@ function Login() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
               className="w-full inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-900/30 transition hover:-translate-y-0.5 hover:from-emerald-400 hover:to-green-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {isLoading ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Memproses...
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                  </svg>
-                  Masuk Sekarang
-                </>
-              )}
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              Masuk Sekarang
             </button>
           </form>
 
