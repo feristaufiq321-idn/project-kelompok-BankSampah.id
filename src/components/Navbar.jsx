@@ -1,8 +1,11 @@
 import logoBankSampah from "../assets/images/logo-banksampah.png";
-import { NavLink, Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { authNavigation, mainNavigation } from "../data/navigation";
 
 function Navbar() {
+  const { pathname } = useLocation();
+  const isDashboardPage = pathname === "/dashboard";
+
   const linkClass = ({ isActive }) =>
     [
       "rounded-md px-3 py-2 text-sm font-semibold transition",
@@ -18,7 +21,7 @@ function Navbar() {
           <img
             src={logoBankSampah}
             alt="BankSampah.id Logo"
-            className="h-12 w-auto object-contain"
+            className="h-12 w-auto object-contain mix-blend-multiply"
           />
         </Link>
 
@@ -28,28 +31,34 @@ function Navbar() {
               {item.label}
             </NavLink>
           ))}
-          <NavLink to="/dashboard" className={linkClass}>
-            Dashboard
-          </NavLink>
         </div>
 
         <div className="flex items-center gap-2">
-          {authNavigation.map((item) => (
+          {isDashboardPage ? (
             <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                [
-                  "rounded-md px-4 py-2 text-sm font-semibold transition",
-                  isActive
-                    ? "bg-emerald-800 text-white"
-                    : "border border-emerald-200 text-emerald-800 hover:bg-emerald-50",
-                ].join(" ")
-              }
+              to="/login"
+              className="rounded-md border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50"
             >
-              {item.label}
+              Keluar
             </NavLink>
-          ))}
+          ) : (
+            authNavigation.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  [
+                    "rounded-md px-4 py-2 text-sm font-semibold transition",
+                    isActive
+                      ? "bg-emerald-800 text-white"
+                      : "border border-emerald-200 text-emerald-800 hover:bg-emerald-50",
+                  ].join(" ")
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))
+          )}
         </div>
       </nav>
     </header>
