@@ -1,4 +1,5 @@
 import { useId, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // ─── Data: Navigation ────────────────────────────────────────────────────────
 
@@ -256,6 +257,7 @@ const SiteFooterLinksSection = () => {
 // ─── Component: WasteBankLocatorSection ──────────────────────────────────────
 
 const WasteBankLocatorSection = () => {
+  const navigate = useNavigate();
   const locationInputId = useId();
   const operationalSelectId = useId();
   const partnershipSelectId = useId();
@@ -483,6 +485,7 @@ const WasteBankLocatorSection = () => {
                   <div className="flex flex-1 flex-col items-end">
                     <button
                       type="button"
+                      onClick={() => navigate(`/bank-sampah/${location.id}`)}
                       className={`inline-flex flex-col items-center justify-center px-4 py-1.5 relative flex-[0_0_auto] rounded-lg border border-solid ${detailBorderColor} cursor-pointer bg-transparent`}
                       aria-label={`Lihat detail ${location.title}`}
                     >
