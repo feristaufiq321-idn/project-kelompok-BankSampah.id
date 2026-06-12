@@ -1,11 +1,10 @@
-import PlaceholderPage from "./PlaceholderPage";
+import { WasteBankLocatorSection } from "./BankSampah";
 
 function WasteBanks() {
   return (
-    <PlaceholderPage
-      title="Bank Sampah"
-      description="Daftar bank sampah mitra akan ditampilkan di sini lengkap dengan lokasi, kategori layanan, dan informasi singkat untuk calon nasabah."
-    />
+    <div className="w-full overflow-x-hidden">
+      <WasteBankLocatorSection />
+    </div>
   );
 }
 
