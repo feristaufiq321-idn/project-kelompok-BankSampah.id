@@ -1,55 +1,9 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useId, useMemo, useState } from "react";
-import {
-  FaUsers,
-  FaRecycle,
-  FaUserShield,
-  FaUser,
-  FaEnvelope,
-  FaPhone,
-  FaLock,
-  FaArrowRight,
-} from "react-icons/fa";
 
-const roleOptions = [
-  {
-    id: "masyarakat",
-    label: "Masyarakat",
-    icon: <FaUsers size={24} />,
-    selected: true,
-  },
-  {
-    id: "nasabah",
-    label: "Nasabah",
-    icon: <FaRecycle size={24} />,
-    selected: false,
-  },
-  {
-    id: "pengelola",
-    label: "Pengelola",
-    icon: <FaUserShield size={24} />,
-    selected: false,
-  },
-];
-
-const inputBaseClassName =
-  "relative grow border-[none] [background:none] self-stretch mt-[-1.00px] [font-family:'Nunito_Sans-Regular',Helvetica] font-normal text-[#1a1a2e] text-base tracking-[0] leading-[normal] p-0 placeholder:text-gray-500";
-
-export const RegisterDesktop = () => {
+function Register() {
   const navigate = useNavigate();
-
-  const formId = useId();
-  const fullNameId = `${formId}-full-name`;
-  const emailId = `${formId}-email`;
-  const phoneId = `${formId}-phone`;
-  const passwordId = `${formId}-password`;
-  const confirmPasswordId = `${formId}-confirm-password`;
-  const agreementId = `${formId}-agreement`;
-
-  const [selectedRole, setSelectedRole] = useState(
-    roleOptions.find((role) => role.selected)?.id || roleOptions[0].id,
-  );
-
+  const [selectedRole, setSelectedRole] = useState("masyarakat");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -58,335 +12,382 @@ export const RegisterDesktop = () => {
     confirmPassword: "",
     agreed: false,
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const isSubmitDisabled = useMemo(() => {
-    return (
-      !formData.fullName.trim() ||
-      !formData.email.trim() ||
-      !formData.phone.trim() ||
-      !formData.password ||
-      !formData.confirmPassword ||
-      !formData.agreed
-    );
-  }, [formData]);
+  const roles = [
+    {
+      id: "masyarakat",
+      label: "Masyarakat",
+      icon: (
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M17 20h5v-2a3 3 0 00-5.856-1.487M15 10a3 3 0 11-6 0 3 3 0 016 0zM4 20h16a2 2 0 002-2v-2a3 3 0 00-5.856-1.487M11 10a3 3 0 11-6 0 3 3 0 016 0zM3 20h10v-2a3 3 0 00-5.856-1.487z"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "nasabah",
+      label: "Nasabah",
+      icon: (
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "pengelola",
+      label: "Pengelola",
+      icon: (
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+      ),
+    },
+  ];
 
-  const handleChange = (field) => (event) => {
-    const value =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
-
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [field]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const handleSubmit = (event) => {
-  event.preventDefault();
-
-  alert("Pendaftaran berhasil!");
-  navigate("/login");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      formData.fullName &&
+      formData.email &&
+      formData.phone &&
+      formData.password &&
+      formData.confirmPassword &&
+      formData.agreed
+    ) {
+      if (formData.password === formData.confirmPassword) {
+        alert("Pendaftaran berhasil! Silakan login dengan akun Anda.");
+        navigate("/login");
+      } else {
+        alert("Kata sandi tidak cocok!");
+      }
+    } else {
+      alert("Mohon isi semua field dan setujui syarat & ketentuan!");
+    }
   };
 
   return (
-    <main className="flex min-h-[1076px] items-center justify-center px-16 py-[63px] relative bg-[linear-gradient(0deg,rgba(245,242,255,1)_0%,rgba(245,242,255,1)_100%),linear-gradient(0deg,rgba(255,255,255,1)_0%,rgba(255,255,255,1)_100%)] w-full min-w-[1280px]">
-      <div
-        aria-hidden="true"
-        className="absolute w-full h-full top-0 left-0 overflow-hidden"
-      >
-        <div className="absolute -top-64 -left-64 w-[500px] h-[500px] bg-[#75fbb833] rounded-full blur-[32px]" />
-        <div className="absolute -right-64 -bottom-64 w-[600px] h-[600px] bg-[#acf4a433] rounded-full blur-[32px]" />
-      </div>
-      <section className="flex flex-col max-w-[600px] w-[600px] items-start gap-8 p-12 relative bg-white rounded-3xl shadow-[0px_8px_32px_#1b5e2014]">
-        <header className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto] bg-transparent">
-          <div className="flex flex-col items-center relative self-stretch w-full flex-[0_0_auto]">
-            <div className="[font-family:'Playfair_Display-Bold',Helvetica] text-[#00450d] text-2xl tracking-[0] leading-8 relative flex items-center justify-center w-fit mt-[-1.00px] font-bold text-center whitespace-nowrap">
-              BankSampah.id
-            </div>
-          </div>
-          <div className="flex flex-col items-center relative self-stretch w-full flex-[0_0_auto]">
-            <h1 className="[font-family:'Playfair_Display-Bold',Helvetica] text-[#1a1a2e] text-[32px] tracking-[0] leading-10 relative flex items-center justify-center w-fit mt-[-1.00px] font-bold text-center whitespace-nowrap">
-              Daftar Akun Baru
-            </h1>
-          </div>
-          <div className="flex flex-col items-center relative self-stretch w-full flex-[0_0_auto]">
-            <p className="relative w-fit mt-[-1.00px] [font-family:'Nunito_Sans-Regular',Helvetica] font-normal text-[#41493e] text-base text-center tracking-[0] leading-6">
-              Bergabunglah bersama kami untuk menciptakan lingkungan yang
-              <br />
-              lebih bersih dan berkelanjutan.
-            </p>
-          </div>
-        </header>
-        <form
-          className="flex flex-col items-start gap-4 relative self-stretch w-full flex-[0_0_auto]"
-          onSubmit={handleSubmit}
-        >
-          <fieldset className="flex flex-col items-start pt-0 pb-2 px-0 relative self-stretch w-full flex-[0_0_auto] min-w-0">
-            <legend className="sr-only">Pilih Peran Anda</legend>
-            <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex flex-col items-start relative self-stretch w-full flex-[0_0_auto]">
-                <div className="relative flex items-center self-stretch mt-[-1.00px] [font-family:'Nunito_Sans-SemiBold',Helvetica] font-semibold text-[#41493e] text-sm tracking-[0.14px] leading-5">
-                  Pilih Peran Anda
-                </div>
-              </div>
-              <div className="grid grid-cols-3 grid-rows-[86px] h-fit gap-3 self-stretch w-full">
-                {roleOptions.map((role) => {
-                  const isSelected = selectedRole === role.id;
+    <div className="min-h-screen w-full bg-gradient-to-br from-emerald-50 via-purple-50 to-green-50 flex items-center justify-center px-4 py-8">
+      {/* Background Decorations */}
+      <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-emerald-200/30 blur-3xl opacity-50" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-purple-200/30 blur-3xl opacity-50" />
 
-                  return (
-                    <label
-                      key={role.id}
-                      className="h-fit justify-center relative w-full flex flex-col items-start cursor-pointer"
+      {/* Card Container */}
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">
+            Daftar Akun Baru
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Bergabunglah bersama kami untuk menciptakan lingkungan yang lebih
+            bersih dan berkelanjutan.
+          </p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Role Selection */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Pilih Peran Anda
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {roles.map((role) => (
+                <label
+                  key={role.id}
+                  className="relative cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value={role.id}
+                    checked={selectedRole === role.id}
+                    onChange={() => setSelectedRole(role.id)}
+                    className="sr-only"
+                  />
+                  <div
+                    className={`flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${
+                      selectedRole === role.id
+                        ? "border-emerald-600 bg-emerald-50 shadow-lg"
+                        : "border-gray-300 bg-gray-50 hover:border-gray-400"
+                    }`}
+                  >
+                    <div
+                      className={`${
+                        selectedRole === role.id
+                          ? "text-emerald-600"
+                          : "text-gray-600"
+                      }`}
                     >
-                      <input
-                        checked={isSelected}
-                        className="sr-only"
-                        name="role"
-                        onChange={() => setSelectedRole(role.id)}
-                        type="radio"
-                        value={role.id}
-                      />
-                      <div
-                        className={`flex flex-col items-center gap-2 p-4 relative self-stretch w-full flex-[0_0_auto] rounded-xl border border-solid ${isSelected
-                          ? "bg-[#1b5e20] border-[#00450d] shadow-[0px_1px_2px_#0000000d]"
-                          : "bg-[#fcf8ff] border-[#c0c9bb]"
-                          }`}
-                      >
-                        <div
-                          aria-hidden="true"
-                          className="absolute top-[26%] left-4 text-gray-500"
-                        >
-                          <FaUser />
-                        </div>
-                        <div className="flex flex-col items-center relative self-stretch w-full flex-[0_0_auto]">
-                          <div className="relative flex items-center justify-center w-fit mt-[-1.00px] [font-family:'Nunito_Sans-Bold',Helvetica] font-bold text-sm text-center tracking-[0.14px] leading-5 whitespace-nowrap">
-                            {role.label}
-                          </div>
-                        </div>
-                      </div>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-          </fieldset>
-          <div className="flex flex-col items-start gap-1 relative self-stretch w-full flex-[0_0_auto]">
-            <div className="self-stretch flex-[0_0_auto] relative w-full flex flex-col items-start">
-              <label
-                className="relative flex items-center self-stretch mt-[-1.00px] [font-family:'Nunito_Sans-SemiBold',Helvetica] font-semibold text-[#41493e] text-sm tracking-[0.14px] leading-5"
-                htmlFor={fullNameId}
-              >
-                Nama Lengkap
-              </label>
-            </div>
-            <div className="flex flex-col items-start relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex items-start justify-center pl-12 pr-4 py-[13px] relative self-stretch w-full flex-[0_0_auto] bg-[#fcf8ff] rounded-lg overflow-hidden border border-solid border-[#c0c9bb]">
-                <input
-                  autoComplete="name"
-                  className={inputBaseClassName}
-                  id={fullNameId}
-                  onChange={handleChange("fullName")}
-                  placeholder="Masukkan nama lengkap"
-                  type="text"
-                  value={formData.fullName}
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                className="absolute top-[26%] left-4 text-[#1b5e20]"
-              >
-                <FaUser size={16} />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-1 relative self-stretch w-full flex-[0_0_auto]">
-            <div className="self-stretch flex-[0_0_auto] relative w-full flex flex-col items-start">
-              <label
-                className="relative flex items-center self-stretch mt-[-1.00px] [font-family:'Nunito_Sans-SemiBold',Helvetica] font-semibold text-[#41493e] text-sm tracking-[0.14px] leading-5"
-                htmlFor={emailId}
-              >
-                Email
-              </label>
-            </div>
-            <div className="flex flex-col items-start relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex items-start justify-center pl-12 pr-4 py-[13px] relative self-stretch w-full flex-[0_0_auto] bg-[#fcf8ff] rounded-lg overflow-hidden border border-solid border-[#c0c9bb]">
-                <input
-                  autoComplete="email"
-                  className={inputBaseClassName}
-                  id={emailId}
-                  onChange={handleChange("email")}
-                  placeholder="nama@email.com"
-                  type="email"
-                  value={formData.email}
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                className="inline-flex flex-col h-[48.00%] items-start absolute top-[26.00%] left-4"
-              >
-                <FaEnvelope />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-1 relative self-stretch w-full flex-[0_0_auto]">
-            <div className="self-stretch flex-[0_0_auto] relative w-full flex flex-col items-start">
-              <label
-                className="relative flex items-center self-stretch mt-[-1.00px] [font-family:'Nunito_Sans-SemiBold',Helvetica] font-semibold text-[#41493e] text-sm tracking-[0.14px] leading-5"
-                htmlFor={phoneId}
-              >
-                Nomor Telepon
-              </label>
-            </div>
-            <div className="flex flex-col items-start relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex items-start justify-center pl-12 pr-4 py-[13px] relative self-stretch w-full flex-[0_0_auto] bg-[#fcf8ff] rounded-lg overflow-hidden border border-solid border-[#c0c9bb]">
-                <input
-                  autoComplete="tel"
-                  className={inputBaseClassName}
-                  id={phoneId}
-                  inputMode="tel"
-                  onChange={handleChange("phone")}
-                  placeholder="08xxxxxxxxxx"
-                  type="tel"
-                  value={formData.phone}
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                className="inline-flex flex-col h-[48.00%] items-start absolute top-[26.00%] left-4"
-              >
-                <FaPhone />
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 grid-rows-[74px] h-fit gap-4 self-stretch w-full">
-            <div className="relative row-[1_/_2] col-[1_/_2] w-full h-fit flex flex-col items-start gap-1">
-              <div className="self-stretch flex-[0_0_auto] relative w-full flex flex-col items-start">
-                <label
-                  className="relative flex items-center self-stretch mt-[-1.00px] [font-family:'Nunito_Sans-SemiBold',Helvetica] font-semibold text-[#41493e] text-sm tracking-[0.14px] leading-5"
-                  htmlFor={passwordId}
-                >
-                  Kata Sandi
+                      {role.icon}
+                    </div>
+                    <span
+                      className={`text-sm font-semibold ${
+                        selectedRole === role.id
+                          ? "text-emerald-900"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {role.label}
+                    </span>
+                  </div>
                 </label>
-              </div>
-              <div className="flex flex-col items-start relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex items-start justify-center pl-12 pr-4 py-[13px] relative self-stretch w-full flex-[0_0_auto] bg-[#fcf8ff] rounded-lg overflow-hidden border border-solid border-[#c0c9bb]">
-                  <input
-                    autoComplete="new-password"
-                    className={inputBaseClassName}
-                    id={passwordId}
-                    onChange={handleChange("password")}
-                    placeholder="••••••••"
-                    type="password"
-                    value={formData.password}
-                  />
-                </div>
-                <div
-                  aria-hidden="true"
-                  className="inline-flex flex-col h-[48.00%] items-start absolute top-[26.00%] left-4"
-                >
-                  <FaLock />
-                </div>
-              </div>
-            </div>
-            <div className="relative row-[1_/_2] col-[2_/_3] w-full h-fit flex flex-col items-start gap-1">
-              <div className="self-stretch flex-[0_0_auto] relative w-full flex flex-col items-start">
-                <label
-                  className="relative flex items-center self-stretch mt-[-1.00px] [font-family:'Nunito_Sans-SemiBold',Helvetica] font-semibold text-[#41493e] text-sm tracking-[0.14px] leading-5"
-                  htmlFor={confirmPasswordId}
-                >
-                  Konfirmasi Sandi
-                </label>
-              </div>
-              <div className="flex flex-col items-start relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex items-start justify-center pl-12 pr-4 py-[13px] relative self-stretch w-full flex-[0_0_auto] bg-[#fcf8ff] rounded-lg overflow-hidden border border-solid border-[#c0c9bb]">
-                  <input
-                    autoComplete="new-password"
-                    className={inputBaseClassName}
-                    id={confirmPasswordId}
-                    onChange={handleChange("confirmPassword")}
-                    placeholder="••••••••"
-                    type="password"
-                    value={formData.confirmPassword}
-                  />
-                </div>
-                <div
-                  aria-hidden="true"
-                  className="inline-flex flex-col h-[48.00%] items-start absolute top-[26.00%] left-4"
-                >
-                  <FaLock />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-          <div className="flex-col pt-2 pb-0 px-0 flex items-start relative self-stretch w-full flex-[0_0_auto]">
-            <div className="flex items-start relative self-stretch w-full flex-[0_0_auto]">
-              <div className="inline-flex h-5 items-center relative flex-[0_0_auto]">
-                <input
-                  checked={formData.agreed}
-                  className="relative w-4 h-4 bg-[#fcf8ff] rounded border border-solid border-[#c0c9bb] cursor-pointer"
-                  id={agreementId}
-                  onChange={handleChange("agreed")}
-                  type="checkbox"
-                />
-              </div>
-              <div className="inline-flex flex-col items-start pl-3 pr-[55.91px] py-0 relative flex-[0_0_auto]">
-                <label
-                  className="relative w-fit mt-[-1.00px] [font-family:'Nunito_Sans-SemiBold',Helvetica] font-normal text-transparent text-sm tracking-[0.14px] leading-5 cursor-pointer"
-                  htmlFor={agreementId}
-                >
-                  <span className="font-semibold text-[#41493e] tracking-[0.02px]">
-                    Saya menyetujui{" "}
-                  </span>
-                  <span className="[font-family:'Nunito_Sans-Bold',Helvetica] font-bold text-[#00450d] tracking-[0.02px]">
-                    Syarat &amp; Ketentuan
-                  </span>
-                  <span className="font-semibold text-[#41493e] tracking-[0.02px]">
-                    {" "}
-                    dan{" "}
-                  </span>
-                  <span className="[font-family:'Nunito_Sans-Bold',Helvetica] font-bold text-[#00450d] tracking-[0.02px]">
-                    Kebijakan Privasi
-                  </span>
-                  <span className="font-semibold text-[#41493e] tracking-[0.02px]">
-                    {" "}
-                    yang
-                    <br />
-                    berlaku.
-                  </span>
-                </label>
-              </div>
+
+          {/* Full Name */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Nama Lengkap
+            </label>
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              placeholder="Masukkan nama lengkap Anda"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+              required
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="nama@email.com"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+              required
+            />
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Nomor Telepon
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="08xxxxxxxxxx"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Kata Sandi
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Minimal 8 karakter"
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
-          <div className="flex-col items-start pt-4 pb-0 px-0 flex relative self-stretch w-full flex-[0_0_auto]">
-            <button
-              className="items-center justify-center gap-2 px-6 py-4 bg-[#00450d] rounded-xl flex relative self-stretch w-full flex-[0_0_auto] disabled:opacity-100"
-              disabled={isSubmitDisabled}
-              type="submit"
-            >
-              <span className="[font-family:'Nunito_Sans-Bold',Helvetica] text-white text-sm tracking-[0.14px] leading-5 relative flex items-center justify-center w-fit mt-[-1.00px] font-bold text-center whitespace-nowrap">
-                Daftar Sekarang
-              </span>
-              <span className="inline-flex flex-col items-center relative flex-[0_0_auto]">
-                <FaArrowRight />
-              </span>
-            </button>
+
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Konfirmasi Kata Sandi
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Masukkan ulang kata sandi"
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showConfirmPassword ? (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
+
+          {/* Agreement Checkbox */}
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              name="agreed"
+              checked={formData.agreed}
+              onChange={handleChange}
+              className="w-5 h-5 rounded border-gray-300 text-emerald-600 mt-1 cursor-pointer"
+              required
+            />
+            <span className="text-sm text-gray-700">
+              Saya menyetujui{" "}
+              <a href="#" className="text-emerald-600 hover:text-emerald-700 font-semibold">
+                Syarat & Ketentuan
+              </a>{" "}
+              dan{" "}
+              <a href="#" className="text-emerald-600 hover:text-emerald-700 font-semibold">
+                Kebijakan Privasi
+              </a>{" "}
+              yang berlaku.
+            </span>
+          </label>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-lg hover:shadow-xl mt-6"
+          >
+            Daftar Sekarang
+          </button>
         </form>
-        <div className="flex flex-col items-center relative self-stretch w-full flex-[0_0_auto]">
-          <p className="relative flex items-center justify-center w-fit mt-[-1.00px] [font-family:'Nunito_Sans-Regular',Helvetica] font-normal text-transparent text-base text-center tracking-[0] leading-6 whitespace-nowrap">
-            <span className="text-[#41493e]">Sudah punya akun? </span>
+
+        {/* Login Link */}
+        <div className="mt-6 text-center">
+          <p className="text-gray-700">
+            Sudah punya akun?{" "}
             <Link
               to="/login"
-              className="[font-family:'Nunito_Sans-Bold',Helvetica] font-bold text-[#00450d]"
+              className="text-emerald-600 hover:text-emerald-700 font-semibold"
             >
               Masuk di sini
             </Link>
           </p>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
-};
+}
 
-export default RegisterDesktop;
+export default Register;

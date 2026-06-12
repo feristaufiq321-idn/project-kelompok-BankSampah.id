@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import About from "./pages/About";
@@ -14,6 +14,14 @@ import WasteBankDetail from "./pages/WasteBankDetail";
 import WasteBanks from "./pages/WasteBanks";
 
 function App() {
+  const location = useLocation();
+
+  // Hide footer on auth pages
+  const hideFooter =
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/lupa-sandi";
+
   return (
     <div className="flex min-h-screen flex-col bg-emerald-50/40">
       <Navbar />
@@ -33,7 +41,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 }

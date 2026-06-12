@@ -6,12 +6,16 @@ function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    remember: false,
   });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -20,141 +24,208 @@ function Login() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-800 flex items-center justify-center px-6 py-12">
-      {/* Background Effects */}
-      <div className="absolute -left-20 top-20 h-56 w-56 rounded-full bg-emerald-400/20 blur-3xl" />
-      <div className="absolute -right-20 bottom-20 h-72 w-72 rounded-full bg-lime-300/10 blur-3xl" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-green-400/5 blur-3xl" />
+    <div className="w-full min-h-screen flex">
+      {/* Left Side - Visual Area */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-900 flex-col items-center justify-center relative overflow-hidden p-8">
+        {/* Abstract Background Decorations */}
+        <div className="absolute -top-40 -left-40 w-80 h-80 rounded-full bg-emerald-400/10 blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-lime-300/5 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-green-400/5 blur-3xl" />
 
-      <div className="relative w-full max-w-md">
-        {/* Logo & Title */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-md mb-4">
-            <span className="text-4xl">♻️</span>
-          </div>
-          <h1 className="text-3xl font-bold text-white">BankSampah.id</h1>
-          <p className="mt-2 text-emerald-50/80">Masuk ke akun Anda</p>
-        </div>
-
-        {/* Login Card */}
-        <div className="rounded-[2rem] border border-white/10 bg-white/10 backdrop-blur-md p-8 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Error Message */}
-            {/* Email Field */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-emerald-50/90">
-                Alamat Email
-              </label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </span>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="nama@email.com"
-                  className="w-full rounded-2xl border border-white/20 bg-white/5 px-12 py-3 text-white placeholder:text-emerald-50/50 outline-none transition focus:border-emerald-400 focus:bg-white/10 focus:ring-4 focus:ring-emerald-400/20"
-                />
-              </div>
-            </div>
-
-            {/* Password Field */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-emerald-50/90">
-                Password
-              </label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                </span>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Masukkan password"
-                  className="w-full rounded-2xl border border-white/20 bg-white/5 px-12 py-3 text-white placeholder:text-emerald-50/50 outline-none transition focus:border-emerald-400 focus:bg-white/10 focus:ring-4 focus:ring-emerald-400/20"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-400 hover:text-emerald-300 transition"
-                >
-                  {showPassword ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 rounded border-white/30 bg-white/5 text-emerald-500 focus:ring-emerald-400 focus:ring-offset-0"
-                />
-                <span className="text-emerald-50/80">Ingat saya</span>
-              </label>
-              <Link to="/lupa-sandi" className="text-emerald-300 hover:text-emerald-200 transition">
-                Lupa password?
-              </Link>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 px-6 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-900/30 transition hover:-translate-y-0.5 hover:from-emerald-400 hover:to-green-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        {/* Content */}
+        <div className="relative z-10 text-center max-w-sm">
+          {/* Leaf Icon */}
+          <div className="flex justify-center mb-8">
+            <svg
+              className="w-16 h-16 text-emerald-300"
+              fill="currentColor"
+              viewBox="0 0 24 24"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-              </svg>
-              Masuk Sekarang
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/20" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white/10 px-4 text-emerald-50/60">atau</span>
-            </div>
-          </div>
-
-          {/* Register Link */}
-          <div className="text-center">
-            <p className="text-emerald-50/80">
-              Belum punya akun?{" "}
-              <Link to="/register" className="font-semibold text-emerald-300 hover:text-emerald-200 transition">
-                Daftar sekarang
-              </Link>
-            </p>
-          </div>
-        </div>
-
-        {/* Back to Home */}
-        <div className="text-center mt-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-emerald-50/70 hover:text-emerald-50 transition">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <path d="M17.92 7.02C17.45 4.18 14.97 2 12 2c-2.97 0-5.45 2.18-5.92 5.02C3.97 7.55 2 9.92 2 12.5c0 3.04 2.46 5.5 5.5 5.5h11c3.04 0 5.5-2.46 5.5-5.5 0-2.58-1.97-4.95-4.58-5.48z" />
             </svg>
-            Kembali ke beranda
-          </Link>
+          </div>
+
+          {/* Main Title */}
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+            Pahlawan Lingkungan
+          </h2>
+
+          {/* Subtitle */}
+          <p className="text-emerald-50/90 text-lg leading-relaxed">
+            Langkah kecil Anda hari ini menciptakan dampak besar bagi bumi esok
+            hari. Mari kelola jejak lingkungan Anda dengan cara yang lebih
+            cerdas.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full max-w-md">
+          {/* Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-10">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Selamat Datang Kembali
+              </h1>
+              <p className="text-gray-600">Silakan masuk ke akun Anda.</p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email Field */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email atau Nomor Telepon
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="nama@email.com atau 08xxxxxxxxxx"
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Kata Sandi
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Masukkan kata sandi Anda"
+                    className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition"
+                  >
+                    {showPassword ? (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="remember"
+                    checked={formData.remember}
+                    onChange={handleChange}
+                    className="w-4 h-4 rounded border-gray-300 text-emerald-600 cursor-pointer"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">Ingat Saya</span>
+                </label>
+                <Link
+                  to="/lupa-sandi"
+                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                >
+                  Lupa Kata Sandi?
+                </Link>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-lg hover:shadow-xl mt-6"
+              >
+                Masuk
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="my-6 flex items-center">
+              <div className="flex-1 border-t border-gray-300" />
+              <span className="px-3 text-sm text-gray-500">atau lanjutkan dengan</span>
+              <div className="flex-1 border-t border-gray-300" />
+            </div>
+
+            {/* Google Button */}
+            <button
+              type="button"
+              className="w-full border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-3 px-4 rounded-xl transition duration-200 flex items-center justify-center gap-3"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
+              </svg>
+              Google
+            </button>
+
+            {/* Sign Up Link */}
+            <div className="mt-8 text-center">
+              <p className="text-gray-700">
+                Belum punya akun?{" "}
+                <Link
+                  to="/register"
+                  className="text-emerald-600 hover:text-emerald-700 font-semibold"
+                >
+                  Daftar di sini
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
